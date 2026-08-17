@@ -1,0 +1,12 @@
+@if (open()) {
+  <div class="scrim" (click)="cancelled.emit()">
+    <div class="dialog" (click)="$event.stopPropagation()" role="alertdialog" aria-modal="true">
+      <h2>{{ title() }}</h2>
+      <p>{{ message() }}</p>
+      <div class="actions">
+        <button type="button" class="secondary" (click)="cancelled.emit()">{{ cancelLabel() }}</button>
+        <button type="button" class="danger" (click)="confirmed.emit()">{{ confirmLabel() }}</button>
+      </div>
+    </div>
+  </div>
+}

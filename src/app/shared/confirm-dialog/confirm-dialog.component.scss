@@ -1,0 +1,50 @@
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: color-mix(in srgb, var(--color-primary) 45%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 1rem;
+}
+
+.dialog {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--color-primary) 25%, transparent);
+}
+
+h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+p {
+  margin: 0 0 1.25rem;
+  color: var(--color-on-surface-variant);
+  font-size: 0.9rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-outline);
+}
+
+button.danger {
+  background: transparent;
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
+}
