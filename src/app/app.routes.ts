@@ -1,0 +1,42 @@
+import { Routes } from '@angular/router';
+import { authGuard } from './core/auth.guard';
+
+export const routes: Routes = [
+  {
+    path: 'login',
+    loadComponent: () => import('./features/auth/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'signup',
+    loadComponent: () =>
+      import('./features/auth/create-account.component').then((m) => m.CreateAccountComponent),
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./features/auth/forgot-password.component').then((m) => m.ForgotPasswordComponent),
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () =>
+      import('./features/auth/reset-password.component').then((m) => m.ResetPasswordComponent),
+  },
+  {
+    path: '',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/notes-list/notes-list.component').then((m) => m.NotesListComponent),
+  },
+  {
+    path: 'note/new',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/note-editor/note-editor.component').then((m) => m.NoteEditorComponent),
+  },
+  {
+    path: 'note/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/note-editor/note-editor.component').then((m) => m.NoteEditorComponent),
+  },
+];
