@@ -1,32 +1,30 @@
 import { Routes } from "@angular/router";
-import { authGuard } from "./core/auth.guard";
+import { authGuard } from "./data-access/auth/auth.guard";
 
 export const routes: Routes = [
   {
     path: "login",
     loadComponent: () =>
-      import("./features/auth/login/login.component").then(
-        (m) => m.LoginComponent,
-      ),
+      import("./auth/login/login.component").then((m) => m.LoginComponent),
   },
   {
     path: "signup",
     loadComponent: () =>
-      import("./features/auth/create-account/create-account.component").then(
+      import("./auth/create-account/create-account.component").then(
         (m) => m.CreateAccountComponent,
       ),
   },
   {
     path: "forgot-password",
     loadComponent: () =>
-      import("./features/auth/forgot-password/forgot-password.component").then(
+      import("./auth/forgot-password/forgot-password.component").then(
         (m) => m.ForgotPasswordComponent,
       ),
   },
   {
     path: "reset-password",
     loadComponent: () =>
-      import("./features/auth/reset-password/reset-password.component").then(
+      import("./auth/reset-password/reset-password.component").then(
         (m) => m.ResetPasswordComponent,
       ),
   },
@@ -34,7 +32,7 @@ export const routes: Routes = [
     path: "",
     canActivate: [authGuard],
     loadComponent: () =>
-      import("./features/notes-list/notes-list.component").then(
+      import("./notes-list/notes-list.component").then(
         (m) => m.NotesListComponent,
       ),
   },
@@ -42,7 +40,7 @@ export const routes: Routes = [
     path: "note/new",
     canActivate: [authGuard],
     loadComponent: () =>
-      import("./features/note-editor/note-editor/note-editor.component").then(
+      import("./note-editor/note-editor.component").then(
         (m) => m.NoteEditorComponent,
       ),
   },
@@ -50,7 +48,7 @@ export const routes: Routes = [
     path: "note/:id",
     canActivate: [authGuard],
     loadComponent: () =>
-      import("./features/note-editor/note-editor/note-editor.component").then(
+      import("./note-editor/note-editor.component").then(
         (m) => m.NoteEditorComponent,
       ),
   },
@@ -58,8 +56,6 @@ export const routes: Routes = [
     path: "about",
     canActivate: [authGuard],
     loadComponent: () =>
-      import("./features/about/about.component").then(
-        (m) => m.AboutComponent,
-      ),
+      import("./about/about.component").then((m) => m.AboutComponent),
   },
 ];

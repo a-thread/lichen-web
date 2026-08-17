@@ -1,0 +1,66 @@
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 0.1rem;
+}
+
+.heading {
+  font-weight: 500;
+  margin: 0.5rem 0;
+  color: var(--color-text);
+}
+
+.heading.h1 { font-size: 1.5rem; }
+.heading.h2 { font-size: 1.25rem; }
+.heading.h3 { font-size: 1.1rem; }
+
+.text-block {
+  margin: 0;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+code {
+  font-family: monospace;
+  background: var(--color-surface-variant);
+  padding: 0 0.25rem;
+  border-radius: 3px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.list-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.marker {
+  color: var(--color-on-surface-variant);
+}
+
+.checklist-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.checklist-row input[type='checkbox'] {
+  accent-color: var(--color-accent);
+}
+
+.checklist-row .checked {
+  text-decoration: line-through;
+  color: var(--color-on-surface-variant);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--color-outline);
+  margin: 1rem 0;
+}

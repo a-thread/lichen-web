@@ -1,28 +1,28 @@
-import { Component, effect } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { NotesService } from './core/notes.service';
-import { AuthService } from './core/auth.service';
-import { ThemeService } from './core/theme.service';
-import { ToastComponent } from './shared/toast/toast.component';
-import { IconComponent } from './shared/icon/icon.component';
+import { Component, effect, inject } from "@angular/core";
+import { Router, RouterOutlet } from "@angular/router";
+import { NotesStore } from "./data-access/notes/notes.store";
+import { AuthStore } from "./data-access/auth/auth.store";
+import { ThemeStore } from "./theme.store";
+import { ToastComponent } from "./shared/components/toast/toast.component";
+import { IconComponent } from "./shared/components/icon/icon.component";
 
 @Component({
-  selector: 'app-root',
+  selector: "app-root",
   standalone: true,
   imports: [RouterOutlet, ToastComponent, IconComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  templateUrl: "./app.component.html",
+  styleUrl: "./app.component.scss",
 })
 export class AppComponent {
-  constructor(
-    public notesService: NotesService,
-    public auth: AuthService,
-    public theme: ThemeService,
-    router: Router
-  ) {
+  readonly notesStore = inject(NotesStore);
+  readonly auth = inject(AuthStore);
+  readonly theme = inject(ThemeStore);
+  private readonly router = inject(Router);
+
+  constructor() {
     effect(() => {
       if (this.auth.passwordRecoveryPending()) {
-        router.navigate(['/reset-password']);
+        this.router.navigate(["/reset-password"]);
       }
     });
   }
