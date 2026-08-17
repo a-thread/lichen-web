@@ -27,7 +27,8 @@ export class AppComponent {
     });
   }
 
-  signOut(): void {
-    this.auth.signOut();
+  async signOut(): Promise<void> {
+    await this.auth.signOut();
+    this.router.navigate(["/login"]);
   }
 }
