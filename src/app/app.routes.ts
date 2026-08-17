@@ -54,4 +54,12 @@ export const routes: Routes = [
         (m) => m.NoteEditorComponent,
       ),
   },
+  {
+    path: "about",
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import("./features/about/about.component").then(
+        (m) => m.AboutComponent,
+      ),
+  },
 ];

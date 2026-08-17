@@ -3,11 +3,21 @@
     <h1>lichen</h1>
     <div class="header-actions">
       <span class="status">{{ notesService.isOnline() ? 'Online' : 'Offline — changes saved locally' }}</span>
-      <button type="button" class="icon-btn" (click)="theme.toggle()" [title]="theme.isDark() ? 'Switch to light mode' : 'Switch to dark mode'">
-        {{ theme.isDark() ? '☀️' : '🌙' }}
+      <button
+        type="button"
+        class="icon-btn"
+        (click)="theme.cycle()"
+        [title]="'Theme: ' + theme.preference() + ' (click to change)'"
+      >
+        @switch (theme.preference()) {
+          @case ('system') { <app-icon name="desktop" /> }
+          @case ('light') { <app-icon name="sun" /> }
+          @case ('dark') { <app-icon name="moon" /> }
+        }
       </button>
       <button type="button" class="secondary" (click)="signOut()">Sign out</button>
     </div>
   </header>
 }
 <router-outlet />
+<app-toast />

@@ -1,28 +1,71 @@
 <div class="editor-page">
   <div class="editor">
-    <input [ngModel]="title()" (ngModelChange)="title.set($event)" placeholder="Title" class="title-input" />
+    <div class="top-bar">
+      @if (screenMode() === 'edit') {
+        <button type="button" class="icon-btn" (click)="requestClose()" title="Close">
+          <app-icon name="close" />
+        </button>
+      } @else {
+        <button type="button" class="icon-btn" (click)="requestClose()" title="Back">
+          <app-icon name="back" />
+        </button>
+      }
 
-    <div class="toolbar-row">
-      <div class="mode-switch">
-        <button type="button" [class.active]="mode() === 'write'" (click)="mode.set('write')">Write</button>
-        <button type="button" [class.active]="mode() === 'preview'" (click)="mode.set('preview')">Preview</button>
+      <div class="top-bar-actions">
+        @if (screenMode() === 'read') {
+          <button type="button" class="secondary" (click)="exportNote()">
+            <app-icon name="download" [size]="16" /><span>Export</span>
+          </button>
+          <button type="button" class="accent" (click)="enterEdit()">
+            <app-icon name="edit" [size]="16" /><span>Edit</span>
+          </button>
+        } @else {
+          <button type="button" class="accent" (click)="save()">
+            <app-icon name="check" [size]="16" /><span>Save</span>
+          </button>
+        }
       </div>
     </div>
 
-    @if (mode() === 'write') {
-      <app-formatting-toolbar [selection]="currentSelection()" (applyChange)="applyToolbarResult($event)" />
-      <textarea #bodyInput [ngModel]="text()" (ngModelChange)="onBodyChange($event)"
-                (keyup)="onCaretMoved()" (click)="onCaretMoved()"
-                placeholder="Start writing..." rows="16"></textarea>
+    @if (screenMode() === 'read') {
+      <h1 class="read-title">{{ title() || 'Untitled' }}</h1>
+      <app-note-preview [body]="text()" (toggleChecklist)="toggleChecklistReadOnly($event)" />
     } @else {
-      <app-note-preview [body]="text()" (toggleChecklist)="onToggleChecklist($event)" />
-    }
+      <input [ngModel]="title()" (ngModelChange)="title.set($event)" placeholder="Title" class="title-input" />
 
-    <div class="actions">
-      <button (click)="save()">Save</button>
-      @if (existingNote()) {
-        <button (click)="remove()" class="danger">Delete</button>
+      <div class="toolbar-row">
+        <div class="mode-switch">
+          <button type="button" [class.active]="mode() === 'write'" (click)="mode.set('write')">Write</button>
+          <button type="button" [class.active]="mode() === 'preview'" (click)="mode.set('preview')">Preview</button>
+        </div>
+      </div>
+
+      @if (mode() === 'write') {
+        <app-formatting-toolbar [selection]="currentSelection()" (applyChange)="applyToolbarResult($event)" />
+        <textarea #bodyInput [ngModel]="text()" (ngModelChange)="onBodyChange($event)"
+                  (keyup)="onCaretMoved()" (click)="onCaretMoved()"
+                  placeholder="Start writing..." rows="16"></textarea>
+      } @else {
+        <app-note-preview [body]="text()" (toggleChecklist)="onToggleChecklist($event)" />
       }
-    </div>
+
+      @if (existingNote()) {
+        <div class="actions">
+          <button (click)="remove()" class="danger">
+            <app-icon name="delete" [size]="16" /><span>Delete</span>
+          </button>
+        </div>
+      }
+    }
   </div>
 </div>
+
+<app-confirm-dialog
+  [open]="showDiscardDialog()"
+  title="Discard changes?"
+  message="Your changes will be lost."
+  confirmLabel="Discard"
+  cancelLabel="Cancel"
+  (confirmed)="confirmDiscard()"
+  (cancelled)="cancelDiscard()"
+/>

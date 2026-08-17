@@ -3,11 +3,13 @@ import { Router, RouterOutlet } from '@angular/router';
 import { NotesService } from './core/notes.service';
 import { AuthService } from './core/auth.service';
 import { ThemeService } from './core/theme.service';
+import { ToastComponent } from './shared/toast/toast.component';
+import { IconComponent } from './shared/icon/icon.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ToastComponent, IconComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

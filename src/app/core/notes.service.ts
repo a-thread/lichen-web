@@ -1,5 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { Note, newNoteId, textBody } from './note.model';
+import { NotesSort, sortNotes } from './notes-sort';
 import { OfflineStoreService } from './offline-store.service';
 import { SupabaseService } from './supabase.service';
 
@@ -8,6 +9,12 @@ export class NotesService {
   readonly notes = signal<Note[]>([]);
   readonly isOnline = signal(navigator.onLine);
   readonly isSyncing = signal(false);
+  readonly sort = signal<NotesSort>('date-newest');
+  readonly sortedNotes = computed(() => sortNotes(this.notes(), this.sort()));
+
+  setSort(sort: NotesSort): void {
+    this.sort.set(sort);
+  }
 
   constructor(
     private offlineStore: OfflineStoreService,
@@ -26,11 +33,7 @@ export class NotesService {
 
   private async loadLocal(): Promise<void> {
     const local = await this.offlineStore.getAllNotes();
-    this.notes.set(this.sortByUpdated(local));
-  }
-
-  private sortByUpdated(notes: Note[]): Note[] {
-    return [...notes].sort((a, b) => b.updated_at.localeCompare(a.updated_at));
+    this.notes.set(sortNotes(local, 'date-newest'));
   }
 
   /** Pull the latest from Supabase and merge into the local cache. Call on app start / pull-to-refresh. */
@@ -77,6 +80,11 @@ export class NotesService {
     await this.offlineStore.queueChange({ noteId: id, op: 'delete', queuedAt: new Date().toISOString() });
     await this.loadLocal();
     if (this.isOnline()) this.syncPending();
+  }
+
+  /** Re-inserts a just-deleted note verbatim. Used by the list's "Undo" toast action. */
+  async restoreNote(note: Note): Promise<void> {
+    await this.saveLocalAndQueue(note);
   }
 
   private async saveLocalAndQueue(note: Note): Promise<void> {

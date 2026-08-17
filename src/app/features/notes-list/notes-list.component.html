@@ -1,21 +1,136 @@
 <div class="list-page">
   <div class="toolbar">
-    <button type="button" class="secondary" (click)="notesService.refreshFromRemote()">Refresh</button>
-    <a routerLink="/note/new"><button type="button" class="accent">+ New Note</button></a>
+    <button
+      type="button"
+      class="icon-btn"
+      [class.active]="searchOpen()"
+      (click)="toggleSearch()"
+      title="Search"
+    >
+      <app-icon name="search" />
+    </button>
+
+    @if (searchOpen()) {
+      <div class="search-wrap">
+        <app-icon name="search" [size]="16" class="search-icon" />
+        <input
+          #searchInput
+          type="search"
+          class="search-input"
+          placeholder="Search Notes"
+          [ngModel]="search()"
+          (ngModelChange)="search.set($event)"
+        />
+      </div>
+    } @else {
+      <div class="spacer"></div>
+    }
+
+    <a routerLink="/note/new" class="new-note-link">
+      <button type="button" class="accent">
+        <app-icon name="add" [size]="16" />
+        <span>New Note</span>
+      </button>
+    </a>
+
+    <div class="menu-wrap">
+      <button
+        type="button"
+        class="icon-btn"
+        (click)="menuOpen.set(!menuOpen())"
+        title="Menu"
+      >
+        <app-icon name="more" />
+      </button>
+      @if (menuOpen()) {
+        <div class="menu-scrim" (click)="menuOpen.set(false)"></div>
+        <div class="menu">
+          <div class="menu-handle"></div>
+
+          <button type="button" class="menu-item" (click)="toggleLayout()">
+            <app-icon [name]="layout() === 'grid' ? 'list' : 'grid'" [size]="18" />
+            <span>{{ layout() === "grid" ? "List view" : "Grid view" }}</span>
+          </button>
+
+          <div class="menu-divider"></div>
+
+          <div class="menu-label">
+            <app-icon name="sort" [size]="16" />
+            <span>Sort notes</span>
+          </div>
+          @for (opt of sortOptions; track opt[0]) {
+            <button
+              type="button"
+              class="menu-item indent"
+              [class.selected]="notesService.sort() === opt[0]"
+              (click)="onSortChange(opt[0]); menuOpen.set(false)"
+            >
+              <span>{{ opt[1] }}</span>
+              @if (notesService.sort() === opt[0]) {
+                <app-icon name="check" [size]="18" class="check" />
+              }
+            </button>
+          }
+
+          <div class="menu-divider"></div>
+
+          <button type="button" class="menu-item" (click)="triggerImport()">
+            <app-icon name="upload" [size]="18" />
+            <span>Import from text file</span>
+          </button>
+          <button type="button" class="menu-item" (click)="exportAll()">
+            <app-icon name="download" [size]="18" />
+            <span>Export notes</span>
+          </button>
+
+          <div class="menu-divider"></div>
+
+          <a routerLink="/about" class="menu-item" (click)="menuOpen.set(false)">
+            <app-icon name="info" [size]="18" />
+            <span>About</span>
+          </a>
+        </div>
+      }
+    </div>
+    <input
+      #fileInput
+      type="file"
+      accept=".txt,text/plain"
+      hidden
+      (change)="onImportFile($event)"
+    />
   </div>
 
   @if (notesService.notes().length === 0) {
     <p class="empty">No notes yet — create your first one.</p>
+  } @else if (filteredNotes().length === 0) {
+    <p class="empty">No notes match "{{ search() }}".</p>
   }
 
-  <ul class="notes-list">
-    @for (note of notesService.notes(); track note.id) {
+  <ul class="notes-list" [class.grid]="layout() === 'grid'">
+    @for (note of filteredNotes(); track note.id) {
       <li>
         <a [routerLink]="['/note', note.id]">
-          <strong>{{ note.title || 'Untitled' }}</strong>
-          <p>{{ preview(note.body) }}</p>
+          <div class="note-row">
+            <div class="note-text">
+              <strong>{{ note.title || "Untitled" }}</strong>
+              <p>{{ preview(note.body) }}</p>
+            </div>
+            <button
+              type="button"
+              class="delete-btn"
+              (click)="deleteNote(note, $event)"
+              title="Delete note"
+            >
+              <app-icon name="delete" [size]="17" />
+            </button>
+          </div>
         </a>
       </li>
     }
   </ul>
+
+  <a routerLink="/note/new" class="fab" title="New note">
+    <app-icon name="add" [size]="26" />
+  </a>
 </div>

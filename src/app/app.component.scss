@@ -27,15 +27,39 @@ h1 {
 }
 
 .icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
   background: transparent;
-  border: 1px solid var(--color-outline);
-  color: var(--color-text);
-  padding: 0.35rem 0.55rem;
-  line-height: 1;
+  border: none;
+  border-radius: 50%;
+  color: var(--color-on-surface-variant);
+}
+
+.icon-btn:hover:not(:disabled) {
+  background: var(--color-surface-variant);
+  opacity: 1;
+}
+
+.icon-btn:focus-visible {
+  border-radius: 50%;
 }
 
 button.secondary {
   background: transparent;
   color: var(--color-text);
   border: 1px solid var(--color-outline);
+}
+
+@media (max-width: 640px) {
+  header {
+    padding: 0.85rem 1rem;
+  }
+
+  .status {
+    display: none;
+  }
 }
