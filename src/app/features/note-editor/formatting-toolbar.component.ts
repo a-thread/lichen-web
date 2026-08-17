@@ -1,15 +1,24 @@
-import { Component, input, output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { BlockTextStyle } from '../../core/editor/editor-block.model';
-import { Selection, applyTextStyle, detectFormatting, toggleBlock, toggleInline } from '../../core/editor/toolbar-actions';
+import { Component, input, output } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { BlockTextStyle } from "../../core/editor/editor-block.model";
+import {
+  Selection,
+  applyTextStyle,
+  detectFormatting,
+  toggleBlock,
+  toggleInline,
+} from "../../core/editor/toolbar-actions";
 
 @Component({
-  selector: 'app-formatting-toolbar',
+  selector: "app-formatting-toolbar",
   standalone: true,
   imports: [FormsModule],
   template: `
     <div class="toolbar">
-      <select [ngModel]="formatting().textStyle" (ngModelChange)="onStyleChange($event)">
+      <select
+        [ngModel]="formatting().textStyle"
+        (ngModelChange)="onStyleChange($event)"
+      >
         <option value="NORMAL">Normal</option>
         <option value="H1">Heading 1</option>
         <option value="H2">Heading 2</option>
@@ -18,28 +27,101 @@ import { Selection, applyTextStyle, detectFormatting, toggleBlock, toggleInline 
 
       <span class="divider"></span>
 
-      <button type="button" [class.active]="formatting().bold" (click)="apply(toggleInline(selection(), '**'))" title="Bold"><b>B</b></button>
-      <button type="button" [class.active]="formatting().italic" (click)="apply(toggleInline(selection(), '*'))" title="Italic"><i>I</i></button>
+      <button
+        type="button"
+        [class.active]="formatting().bold"
+        (click)="apply(toggleInline(selection(), '**'))"
+        title="Bold"
+      >
+        <b>B</b>
+      </button>
+      <button
+        type="button"
+        [class.active]="formatting().italic"
+        (click)="apply(toggleInline(selection(), '*'))"
+        title="Italic"
+      >
+        <i>I</i>
+      </button>
 
       <span class="divider"></span>
 
-      <button type="button" [class.active]="formatting().bullet" (click)="apply(toggleBlock(selection(), 'bullet'))" title="Bullet list">&bull; List</button>
-      <button type="button" [class.active]="formatting().checklist" (click)="apply(toggleBlock(selection(), 'checklist'))" title="Checklist">&#9745; List</button>
-      <button type="button" [class.active]="formatting().numbered" (click)="apply(toggleBlock(selection(), 'numbered'))" title="Numbered list">1. List</button>
+      <button
+        type="button"
+        [class.active]="formatting().bullet"
+        (click)="apply(toggleBlock(selection(), 'bullet'))"
+        title="Bullet list"
+      >
+        &bull; List
+      </button>
+      <button
+        type="button"
+        [class.active]="formatting().checklist"
+        (click)="apply(toggleBlock(selection(), 'checklist'))"
+        title="Checklist"
+      >
+        &#9745; List
+      </button>
+      <button
+        type="button"
+        [class.active]="formatting().numbered"
+        (click)="apply(toggleBlock(selection(), 'numbered'))"
+        title="Numbered list"
+      >
+        1. List
+      </button>
 
       <span class="divider"></span>
 
-      <button type="button" [class.active]="formatting().code" (click)="apply(toggleInline(selection(), '\`'))" title="Code"><code>&lt;/&gt;</code></button>
+      <button
+        type="button"
+        [class.active]="formatting().code"
+        (click)="apply(toggleInline(selection(), '\`'))"
+        title="Code"
+      >
+        <code>&lt;/&gt;</code>
+      </button>
     </div>
   `,
   styles: [
-    `.toolbar { display: flex; align-items: center; gap: 0.35rem; padding: 0.4rem 0.5rem;
-       background: rgba(0, 0, 0, 0.04); border-radius: 4px; flex-wrap: wrap; }
-     button { border: 1px solid transparent; background: transparent; padding: 0.25rem 0.5rem;
-       border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
-     button.active { background: #457b9d; color: white; }
-     select { border: 1px solid #ccc; border-radius: 4px; padding: 0.2rem; font-size: 0.85rem; }
-     .divider { width: 1px; height: 1.25rem; background: #ccc; margin: 0 0.25rem; }`,
+    `
+      .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.4rem 0.5rem;
+        background: var(--color-surface-variant);
+        border-radius: 4px;
+        flex-wrap: wrap;
+      }
+      button {
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--color-text);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+      }
+      button.active {
+        background: var(--color-accent);
+        color: var(--color-on-accent);
+      }
+      select {
+        border: 1px solid var(--color-outline);
+        border-radius: 4px;
+        padding: 0.2rem;
+        font-size: 0.85rem;
+        background: var(--color-surface);
+        color: var(--color-text);
+      }
+      .divider {
+        width: 1px;
+        height: 1.25rem;
+        background: var(--color-outline);
+        margin: 0 0.25rem;
+      }
+    `,
   ],
 })
 export class FormattingToolbarComponent {
