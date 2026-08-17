@@ -1,0 +1,9 @@
+{
+  "name": "Lichen",
+  "short_name": "Lichen",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F0F3EE",
+  "theme_color": "#8FA15A",
+  "icons": []
+}
