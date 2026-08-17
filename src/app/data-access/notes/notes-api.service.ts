@@ -6,10 +6,11 @@ import { Note } from "./note.model";
 export class NotesApiService {
   private readonly supabase = inject(SupabaseClientService);
 
-  async fetchNotes(): Promise<Note[]> {
+  async fetchNotes(userId: string): Promise<Note[]> {
     const { data, error } = await this.supabase.client
       .from("note")
       .select("*")
+      .eq("user_id", userId)
       .order("updated_at", { ascending: false });
     if (error) throw error;
     return data as Note[];
@@ -20,11 +21,12 @@ export class NotesApiService {
     if (error) throw error;
   }
 
-  async deleteNote(id: string): Promise<void> {
+  async deleteNote(id: string, userId: string): Promise<void> {
     const { error } = await this.supabase.client
       .from("note")
       .delete()
-      .eq("id", id);
+      .eq("id", id)
+      .eq("user_id", userId);
     if (error) throw error;
   }
 }

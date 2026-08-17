@@ -11,7 +11,9 @@ export const authGuard: CanActivateFn = async () => {
 
   if (auth.isInitializing()) {
     await firstValueFrom(
-      toObservable(auth.isInitializing).pipe(filter((initializing) => !initializing)),
+      toObservable(auth.isInitializing).pipe(
+        filter((initializing: boolean) => !initializing),
+      ),
     );
   }
 

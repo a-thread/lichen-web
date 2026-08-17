@@ -24,9 +24,19 @@ export class NotesOfflineService {
     });
   }
 
-  async getAllNotes(): Promise<Note[]> {
+  /** Scoped to the signed-in user — the local cache is a single IndexedDB store shared by whoever last used this browser. */
+  async getAllNotes(userId: string): Promise<Note[]> {
     const db = await this.dbPromise;
-    return db.getAll(NOTES_STORE);
+    const all: Note[] = await db.getAll(NOTES_STORE);
+    return all.filter((note) => note.user_id === userId);
+  }
+
+  /** Wipes the local cache. Call on sign-out so the next user on this device doesn't see stale notes before their own data loads. */
+  async clearAll(): Promise<void> {
+    const db = await this.dbPromise;
+    const tx = db.transaction([NOTES_STORE, QUEUE_STORE], "readwrite");
+    await Promise.all([tx.objectStore(NOTES_STORE).clear(), tx.objectStore(QUEUE_STORE).clear()]);
+    await tx.done;
   }
 
   async getNote(id: string): Promise<Note | undefined> {
