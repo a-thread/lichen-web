@@ -1,0 +1,9 @@
+@if (toast.current(); as t) {
+  <div class="toast" role="status">
+    <span class="message">{{ t.message }}</span>
+    @if (t.action) {
+      <button type="button" class="link" (click)="toast.runAction()">{{ t.action.label }}</button>
+    }
+    <button type="button" class="dismiss" (click)="toast.dismiss()" aria-label="Dismiss">&times;</button>
+  </div>
+}

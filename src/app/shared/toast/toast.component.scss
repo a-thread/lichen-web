@@ -1,0 +1,52 @@
+:host {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translateX(-50%);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.75rem 0.65rem 1rem;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-primary) 25%, transparent);
+  pointer-events: auto;
+  max-width: min(90vw, 420px);
+}
+
+.message {
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+button.link {
+  background: transparent;
+  border: none;
+  padding: 0.2rem 0.4rem;
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+button.dismiss {
+  background: transparent;
+  border: none;
+  padding: 0.2rem 0.4rem;
+  color: var(--color-on-primary);
+  opacity: 0.6;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+button.link:hover:not(:disabled),
+button.dismiss:hover:not(:disabled) {
+  opacity: 1;
+}
