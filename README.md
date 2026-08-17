@@ -16,9 +16,13 @@ Most "offline-first" demos fake it — show a spinner, retry on reconnect, call 
 
 - **Block-based markdown editor** — headings, bold/italic/code, bullet lists, numbered lists, and checklists, with a live Write/Preview toggle
 - **Smart list continuation** — press Enter inside a list or checklist and it continues automatically; Backspace on an empty item collapses it back to plain text
+- **Read-only note view** — opening a note shows a clean rendered view first; Edit switches to the editor, and closing with unsaved changes prompts a discard confirmation
+- **List management** — search by title/body, sort by title or date, toggle between grid and list layouts
+- **Quick delete with undo** — delete a note from the list and undo it from the confirmation toast before it syncs away
+- **Import & export** — import a `.txt` file as a new note; export a single note or your entire library as plain text, in a format shared with the Android app
 - **True offline-first** — IndexedDB-backed local cache with a background sync queue; the app is fully usable with no connection
 - **Full auth flow** — sign up with email confirmation, sign in, forgot/reset password, all backed by Supabase Auth
-- **Light & dark themes** — a deliberate, hand-tuned palette (not framework defaults), persisted across sessions
+- **System, light & dark themes** — a deliberate, hand-tuned palette (not framework defaults), persisted across sessions
 - **Installable PWA** — add it to your home screen and it behaves like a native app
 
 ## Tech stack
@@ -44,14 +48,23 @@ A few decisions worth calling out for anyone reading the code:
 ```
 src/app/
   core/
-    editor/          # block parser, input transform, toolbar actions — the editor engine
-    auth.service.ts  # Supabase auth wrapper + route guard
-    notes.service.ts # offline-first read/write + background sync
-    theme.service.ts # light/dark mode, persisted
+    editor/           # block parser, input transform, toolbar actions — the editor engine
+    auth.service.ts   # Supabase auth wrapper + route guard
+    notes.service.ts  # offline-first read/write + background sync
+    theme.service.ts  # system/light/dark mode, persisted
+    notes-sort.ts      # sort modes + comparator
+    export-format.ts   # import/export text format, shared with the Android app
+    download-file.ts   # browser-side file download helper
+    toast.service.ts   # snackbar-style notifications (undo delete, import/export status)
   features/
-    auth/             # sign in, sign up, forgot/reset password
-    note-editor/       # write/preview, formatting toolbar
-    notes-list/        # home screen
+    auth/          # sign in, sign up, forgot/reset password
+    note-editor/    # read-only view, write/preview editor, formatting toolbar
+    notes-list/     # home screen — search, sort, grid/list toggle, import/export menu
+    about/          # app info screen
+  shared/
+    icon/            # hand-drawn inline-SVG icon set used throughout the app
+    toast/           # toast/snackbar host component
+    confirm-dialog/  # reusable confirm/cancel modal (discard changes, etc.)
 ```
 
 ## Getting started
@@ -78,9 +91,10 @@ never get committed.
 
 ## What's not here yet
 
-This covers the core loop end-to-end (write, sync, auth, offline, install) rather than full
-parity with the Android app. Not yet ported: import/export, and multi-device conflict resolution
-beyond last-write-wins.
+This now covers essentially the full Android feature set — editor, offline sync, auth, search/sort/grid,
+import/export, read-only view — end-to-end. The remaining gaps are deliberate rather than missing work:
+no swipe-to-delete gesture (the list's delete icon covers that on both touch and mouse), and no
+multi-device conflict resolution beyond last-write-wins.
 
 ## Origin
 
