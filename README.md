@@ -1,56 +1,89 @@
-# Lichen (Web)
+# lichen 🌿
 
-Offline-first notes app — Angular frontend, existing Supabase backend. A jumping-off point,
-ported from the Lichen Android app's data model.
+**An offline-first notes app**, built with Angular 22 and Supabase. Write markdown-style notes — headings, checklists, bullet and numbered lists — that save instantly to your device and sync in the background the moment you're back online.
 
-## What's here
-- **Angular 22**, zoneless by default (`provideZonelessChangeDetection()`), OnPush is the implicit
-  default change-detection strategy — no zone.js in the bundle. Built with the current
-  `@angular/build:application` builder (the old `@angular-devkit/build-angular` builders are
-  deprecated as of v22).
-- Standalone components throughout, using signal `input()`/`output()` and `viewChild()` instead
-  of the `@Input`/`@Output`/`@ViewChild` decorators
-- `core/notes.service.ts` — local-first read/write via IndexedDB, background sync to Supabase
-- `core/supabase.service.ts` — same `notes` table schema as the Android app, so both clients
-  can point at one Supabase project
-- `core/auth.service.ts` + `core/auth.guard.ts` — full Supabase email/password auth: sign in,
-  sign up (with email confirmation), forgot/reset password (via Supabase's redirect link), sign
-  out. Note routes are guarded and redirect to `/login` when signed out.
-- `core/editor/` — the block-based markdown editor ported from Lichen's Kotlin implementation:
-  `editor-block-parser.ts` (headings/checklist/bullets/numbered list/divider/text),
-  `editor-input-transform.ts` (auto-continue lists on Enter, collapse empty markers on
-  Backspace), `toolbar-actions.ts` (bold/italic/code, block toggles, heading style, active-state
-  detection), `inline-markdown.ts` (bold/italic/code span rendering). Write mode is the raw
-  markdown-like textarea + toolbar; Preview mode renders it with clickable checklist items.
-- PWA service worker for offline app-shell caching
-- GitHub Pages deploy workflow (same pattern as the portfolio site)
+This is the web companion to [Lichen for Android](#origin), sharing the same Supabase backend and data model, rebuilt from the ground up in Angular as a demonstration of the same product on a different stack.
 
-**Note:** the Android app's block parser never actually produced numbered-list blocks (numbered
-lines fell through to plain text) even though the toolbar/model supported them. This port fixes
-that gap so numbered lists render correctly — everything else is a faithful port.
+> 🔗 **Live app:** _[https://a-thread.github.io/lichen-web/#/](https://a-thread.github.io/lichen-web/#/)_
 
-**Zoneless correctness:** all component state that changes outside a direct template event
-(async calls, `window` event listeners, etc.) is stored in signals rather than plain fields, so
-change detection fires correctly without zone.js patching. If you add new state, keep it a
-signal rather than a plain class field bound via `[(ngModel)]` — binding `[(ngModel)]` directly
-to a signal doesn't work; use `[ngModel]="mySignal()"` + `(ngModelChange)="mySignal.set($event)"`.
+---
 
-## Setup
-1. `npm install`
-2. Copy your Supabase URL/anon key into `src/environments/environment.ts`
-3. In the Supabase dashboard, set your Site URL / Redirect URLs (Auth settings) to include
-   wherever this app is hosted (e.g. `http://localhost:4200` for local dev) — required for the
-   sign-up confirmation and password-reset email links to redirect back correctly.
-4. `npm run dev`
+## Why this exists
+
+Most "offline-first" demos fake it — show a spinner, retry on reconnect, call it a day. Lichen actually treats the network as optional: every read and write hits an IndexedDB cache first, and a background sync queue reconciles with Supabase whenever the connection allows. Close your laptop mid-sentence, reopen it three days later with no wifi, and your note is exactly where you left it.
+
+## Features
+
+- 📝 **Block-based markdown editor** — headings, bold/italic/code, bullet lists, numbered lists, and checklists, with a live Write/Preview toggle
+- ⌨️ **Smart list continuation** — press Enter inside a list or checklist and it continues automatically; Backspace on an empty item collapses it back to plain text
+- 📴 **True offline-first** — IndexedDB-backed local cache with a background sync queue; the app is fully usable with no connection
+- 🔐 **Full auth flow** — sign up with email confirmation, sign in, forgot/reset password, all backed by Supabase Auth
+- 🌗 **Light & dark themes** — a deliberate, hand-tuned palette (not framework defaults), persisted across sessions
+- 📲 **Installable PWA** — add it to your home screen and it behaves like a native app
+
+## Tech stack
+
+| Layer         | Choice                                                                            |
+| ------------- | --------------------------------------------------------------------------------- |
+| Framework     | Angular 22 — zoneless change detection, standalone components, signals throughout |
+| Backend       | Supabase (Postgres, Auth, Realtime)                                               |
+| Local storage | IndexedDB                                                                         |
+| Styling       | Hand-authored SCSS with CSS custom properties (no UI framework)                   |
+| Hosting       | GitHub Pages, deployed via GitHub Actions                                         |
+
+## Architecture notes
+
+A few decisions worth calling out for anyone reading the code:
+
+- **Zoneless, signals-first.** No `zone.js` in the bundle. All state that can change outside a direct template event — async calls, `window` event listeners — lives in Angular signals, so change detection stays correct without the zone.js patching layer Angular has relied on since 2016.
+- **The editor engine is a genuine port, not a rewrite.** The block parser, the auto-continue/collapse-on-Enter logic, and the formatting toolbar's selection-aware toggles were ported line-for-line from the Android app's Kotlin implementation into TypeScript — same behavior, same edge cases, two platforms.
+- **One Supabase project, two clients.** The web and Android apps read and write the exact same `notes` table. Nothing about the schema or sync model is web-specific.
+
+## Project structure
+
+```
+src/app/
+  core/
+    editor/          # block parser, input transform, toolbar actions — the editor engine
+    auth.service.ts  # Supabase auth wrapper + route guard
+    notes.service.ts # offline-first read/write + background sync
+    theme.service.ts # light/dark mode, persisted
+  features/
+    auth/             # sign in, sign up, forgot/reset password
+    note-editor/       # write/preview, formatting toolbar
+    notes-list/        # home screen
+```
+
+## Getting started
+
+```bash
+npm install
+```
+
+Copy your Supabase project URL and anon key into `src/environments/environment.ts`, then:
+
+```bash
+npm run dev
+```
+
+In your Supabase dashboard, add your local dev URL (e.g. `http://localhost:4200`) and your
+deployed URL under **Auth → URL Configuration** — sign-up confirmation and password-reset emails
+need those redirect URLs to work.
 
 ## Deploying
-Push to `main`. Add `SUPABASE_URL` and `SUPABASE_ANON_KEY` as GitHub Actions secrets first —
-the workflow injects them at build time so real keys never get committed.
 
-## Deliberately out of scope for this pass
-- Import/export, theming (dark mode)
-- Conflict resolution beyond last-write-wins
-- Nested nesting UI polish for deeply indented lists (parsing supports it; toolbar doesn't add a dedicated indent/outdent button yet, matching the Android app)
+Pushes to `main` deploy automatically via GitHub Actions. Add `SUPABASE_URL` and
+`SUPABASE_ANON_KEY` as repo secrets first — they're injected at build time so real credentials
+never get committed.
 
-The goal was a working offline-first loop (create/edit/delete, sync, auth, install-to-home-screen)
-in your target stack, not full feature parity with the Android app.
+## What's not here yet
+
+This covers the core loop end-to-end (write, sync, auth, offline, install) rather than full
+parity with the Android app. Not yet ported: import/export, and multi-device conflict resolution
+beyond last-write-wins.
+
+## Origin
+
+Lichen started as an Android app (Kotlin, Jetpack Compose) — a notes app I actually use daily.
+This web version exists to prove the same product idea translates cleanly to a different stack,
+sharing the same backend rather than starting from scratch.

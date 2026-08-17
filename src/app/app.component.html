@@ -1,0 +1,13 @@
+@if (auth.userId()) {
+  <header>
+    <h1>lichen</h1>
+    <div class="header-actions">
+      <span class="status">{{ notesService.isOnline() ? 'Online' : 'Offline — changes saved locally' }}</span>
+      <button type="button" class="icon-btn" (click)="theme.toggle()" [title]="theme.isDark() ? 'Switch to light mode' : 'Switch to dark mode'">
+        {{ theme.isDark() ? '☀️' : '🌙' }}
+      </button>
+      <button type="button" class="secondary" (click)="signOut()">Sign out</button>
+    </div>
+  </header>
+}
+<router-outlet />

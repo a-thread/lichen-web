@@ -1,42 +1,57 @@
-import { Routes } from '@angular/router';
-import { authGuard } from './core/auth.guard';
+import { Routes } from "@angular/router";
+import { authGuard } from "./core/auth.guard";
 
 export const routes: Routes = [
   {
-    path: 'login',
-    loadComponent: () => import('./features/auth/login.component').then((m) => m.LoginComponent),
-  },
-  {
-    path: 'signup',
+    path: "login",
     loadComponent: () =>
-      import('./features/auth/create-account.component').then((m) => m.CreateAccountComponent),
+      import("./features/auth/login/login.component").then(
+        (m) => m.LoginComponent,
+      ),
   },
   {
-    path: 'forgot-password',
+    path: "signup",
     loadComponent: () =>
-      import('./features/auth/forgot-password.component').then((m) => m.ForgotPasswordComponent),
+      import("./features/auth/create-account/create-account.component").then(
+        (m) => m.CreateAccountComponent,
+      ),
   },
   {
-    path: 'reset-password',
+    path: "forgot-password",
     loadComponent: () =>
-      import('./features/auth/reset-password.component').then((m) => m.ResetPasswordComponent),
+      import("./features/auth/forgot-password/forgot-password.component").then(
+        (m) => m.ForgotPasswordComponent,
+      ),
   },
   {
-    path: '',
+    path: "reset-password",
+    loadComponent: () =>
+      import("./features/auth/reset-password/reset-password.component").then(
+        (m) => m.ResetPasswordComponent,
+      ),
+  },
+  {
+    path: "",
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./features/notes-list/notes-list.component').then((m) => m.NotesListComponent),
+      import("./features/notes-list/notes-list.component").then(
+        (m) => m.NotesListComponent,
+      ),
   },
   {
-    path: 'note/new',
+    path: "note/new",
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./features/note-editor/note-editor.component').then((m) => m.NoteEditorComponent),
+      import("./features/note-editor/note-editor/note-editor.component").then(
+        (m) => m.NoteEditorComponent,
+      ),
   },
   {
-    path: 'note/:id',
+    path: "note/:id",
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./features/note-editor/note-editor.component').then((m) => m.NoteEditorComponent),
+      import("./features/note-editor/note-editor/note-editor.component").then(
+        (m) => m.NoteEditorComponent,
+      ),
   },
 ];

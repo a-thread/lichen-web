@@ -1,0 +1,65 @@
+<div class="preview">
+  @for (block of blocks(); track $index) {
+    @switch (block.type) {
+      @case ('heading') {
+        <div [class]="'heading h' + block.level">{{ block.text }}</div>
+      }
+      @case ('text') {
+        <p class="text-block">
+          @for (span of spans(block.text); track $index) {
+            @if (span.bold) {
+              <strong>{{ span.text }}</strong>
+            } @else if (span.italic) {
+              <em>{{ span.text }}</em>
+            } @else if (span.code) {
+              <code>{{ span.text }}</code>
+            } @else {
+              <span>{{ span.text }}</span>
+            }
+          }
+        </p>
+      }
+      @case ('bulletList') {
+        <div class="list">
+          @for (raw of block.items; track $index) {
+            <div class="list-row" [style.paddingLeft.px]="indentLevel(raw) * 16">
+              <span class="marker">&bull;</span>
+              <span>
+                @for (span of spans(stripBulletPrefix(raw)); track $index) {
+                  @if (span.bold) {<strong>{{ span.text }}</strong>}
+                  @else if (span.italic) {<em>{{ span.text }}</em>}
+                  @else if (span.code) {<code>{{ span.text }}</code>}
+                  @else {<span>{{ span.text }}</span>}
+                }
+              </span>
+            </div>
+          }
+        </div>
+      }
+      @case ('numberedList') {
+        <div class="list">
+          @for (item of block.items; track $index) {
+            <div class="list-row" [style.paddingLeft.px]="indentLevel(item.text) * 16">
+              <span class="marker">{{ extractNumber(item.text) }}.</span>
+              <span>{{ stripNumberPrefix(item.text) }}</span>
+            </div>
+          }
+        </div>
+      }
+      @case ('checklist') {
+        <div class="list">
+          @for (item of block.items; track item.lineIndex) {
+            <div class="checklist-row" [style.paddingLeft.px]="indentLevel(item.text) * 16"
+                 (click)="toggleChecklist.emit(item.lineIndex)">
+              <input type="checkbox" [checked]="item.checked" (click)="$event.stopPropagation(); toggleChecklist.emit(item.lineIndex)" />
+              <span [class.checked]="item.checked">{{ item.text }}</span>
+            </div>
+          }
+        </div>
+      }
+      @case ('divider') {
+        <hr />
+      }
+    }
+  }
+</div>

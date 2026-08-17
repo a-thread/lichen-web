@@ -1,0 +1,68 @@
+.list-page {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+.toolbar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-outline);
+}
+
+button.accent {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.notes-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.notes-list li {
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-primary) 6%, transparent);
+}
+
+.notes-list a {
+  text-decoration: none;
+  color: var(--color-text);
+  display: block;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.12s ease;
+}
+
+.notes-list a:hover {
+  background: var(--color-surface-variant);
+}
+
+.notes-list strong {
+  font-weight: 500;
+}
+
+.notes-list p {
+  margin: 0.3rem 0 0;
+  color: var(--color-on-surface-variant);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.empty {
+  color: var(--color-on-surface-variant);
+}

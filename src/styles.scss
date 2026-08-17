@@ -1,76 +1,120 @@
+/* Color values ported directly from the Android app's Color.kt / Theme.kt */
 :root {
   /* Light scheme (LightColorScheme in Theme.kt) */
-  --color-background: #f0f3ee; /* LichenLight */
-  --color-surface: #f7f9f6; /* LichenSurfaceLight */
-  --color-surface-variant: #e1e7e2; /* LichenSurfaceVariantLight */
-  --color-on-surface-variant: #4a544f;
-  --color-outline: #c2cbc5;
+  --color-background: #F0F3EE;      /* LichenLight */
+  --color-surface: #F7F9F6;         /* LichenSurfaceLight */
+  --color-surface-variant: #E1E7E2; /* LichenSurfaceVariantLight */
+  --color-on-surface-variant: #4A544F;
+  --color-outline: #C2CBC5;
 
-  --color-primary: #1c2026; /* LichenBlack — primary buttons/text */
-  --color-on-primary: #f0f3ee;
-  --color-secondary: #76885a; /* LichenAccentSoft */
-  --color-on-secondary: #f0f3ee;
-  --color-accent: #8fa15a; /* LichenAccent — tertiary, same in both modes */
-  --color-on-accent: #f0f3ee;
-  --color-text: #1c2026;
+  --color-primary: #1C2026;    /* LichenBlack — primary buttons/text */
+  --color-on-primary: #F0F3EE;
+  --color-secondary: #76885A;  /* LichenAccentSoft */
+  --color-on-secondary: #F0F3EE;
+  --color-accent: #8FA15A;     /* LichenAccent — tertiary, same in both modes */
+  --color-on-accent: #F0F3EE;
+  --color-text: #1C2026;
   --color-error: #b3261e;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 35%, transparent);
 }
 
 :root.dark {
   /* Dark scheme (DarkColorScheme in Theme.kt) */
-  --color-background: #1c2026; /* LichenBlack */
-  --color-surface: #2b313a; /* LichenSurface */
-  --color-surface-variant: #353c46; /* LichenSurfaceVariantDark */
-  --color-on-surface-variant: #a6b0ab;
-  --color-outline: #3f4752;
+  --color-background: #1C2026;      /* LichenBlack */
+  --color-surface: #2B313A;         /* LichenSurface */
+  --color-surface-variant: #353C46; /* LichenSurfaceVariantDark */
+  --color-on-surface-variant: #A6B0AB;
+  --color-outline: #3F4752;
 
-  --color-primary: #f0f3ee; /* LichenLight — primary buttons/text */
-  --color-on-primary: #1c2026;
-  --color-secondary: #9ba5a0; /* LichenGray */
-  --color-on-secondary: #1c2026;
-  --color-accent: #8fa15a; /* LichenAccent — unchanged in dark mode */
-  --color-on-accent: #1c2026;
-  --color-text: #f0f3ee;
+  --color-primary: #F0F3EE;    /* LichenLight — primary buttons/text */
+  --color-on-primary: #1C2026;
+  --color-secondary: #9BA5A0;  /* LichenGray */
+  --color-on-secondary: #1C2026;
+  --color-accent: #8FA15A;     /* LichenAccent — unchanged in dark mode */
+  --color-on-accent: #1C2026;
+  --color-text: #F0F3EE;
   --color-error: #f2b8b5;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
   /* Android used FontFamily.Default (the platform system font); this stack mirrors that on web */
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background: var(--color-background);
   color: var(--color-text);
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Replace the browser's default blue focus outline everywhere with the accent ring,
+   but only for keyboard navigation — mouse clicks stay quiet. */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
 }
 
 button {
   cursor: pointer;
-  padding: 0.5rem 1rem;
+  padding: 0.55rem 1.1rem;
   border: 1px solid var(--color-primary);
   background: var(--color-primary);
   color: var(--color-on-primary);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 0.95rem;
+  font-family: inherit;
+  transition: opacity 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 
-  &:hover {
+  &:hover:not(:disabled) {
     opacity: 0.88;
   }
 
+  &:active:not(:disabled) {
+    opacity: 0.78;
+  }
+
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.45;
     cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    box-shadow: var(--focus-ring);
   }
 }
 
-input,
-textarea,
-select {
+input, textarea, select {
   background: var(--color-surface);
   color: var(--color-text);
-  border-color: var(--color-outline);
+  border: 1px solid var(--color-outline);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.75rem;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:focus-visible, &:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: var(--focus-ring);
+  }
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%234A544F'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  padding-right: 1.75rem;
 }

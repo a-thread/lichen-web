@@ -1,0 +1,21 @@
+<div class="list-page">
+  <div class="toolbar">
+    <button type="button" class="secondary" (click)="notesService.refreshFromRemote()">Refresh</button>
+    <a routerLink="/note/new"><button type="button" class="accent">+ New Note</button></a>
+  </div>
+
+  @if (notesService.notes().length === 0) {
+    <p class="empty">No notes yet — create your first one.</p>
+  }
+
+  <ul class="notes-list">
+    @for (note of notesService.notes(); track note.id) {
+      <li>
+        <a [routerLink]="['/note', note.id]">
+          <strong>{{ note.title || 'Untitled' }}</strong>
+          <p>{{ preview(note.body) }}</p>
+        </a>
+      </li>
+    }
+  </ul>
+</div>

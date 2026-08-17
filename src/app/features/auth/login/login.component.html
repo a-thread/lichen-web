@@ -1,0 +1,43 @@
+<div class="auth-card">
+  <div class="mark">
+    <img src="images/ic_lichen_mark.png" alt="" />
+  </div>
+  <h2>lichen</h2>
+  <p class="subtitle">Ideas, resilient by design.</p>
+
+  @if (errorMessage()) {
+    <div class="banner error">{{ errorMessage() }}</div>
+  }
+  @if (infoMessage()) {
+    <div class="banner info">{{ infoMessage() }}</div>
+  }
+
+  <label>
+    Email address
+    <input
+      type="email"
+      [ngModel]="email()"
+      (ngModelChange)="email.set($event)"
+      [class.invalid]="email() && !isEmailValid()"
+    />
+  </label>
+
+  <label>
+    Password
+    <input
+      type="password"
+      [ngModel]="password()"
+      (ngModelChange)="password.set($event)"
+      (keyup.enter)="signIn()"
+    />
+  </label>
+
+  <button (click)="signIn()" [disabled]="!canSubmit() || loading()">
+    {{ loading() ? "Signing in…" : "Sign in" }}
+  </button>
+
+  <div class="links">
+    <a routerLink="/forgot-password">Forgot password?</a>
+    <a routerLink="/signup">Create an account</a>
+  </div>
+</div>

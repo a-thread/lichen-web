@@ -1,0 +1,53 @@
+<div class="auth-card">
+  <h2>Let's get started</h2>
+  <p class="subtitle">Fill in your email and create your free account.</p>
+
+  @if (errorMessage()) {
+    <div class="banner error">{{ errorMessage() }}</div>
+  }
+
+  <label>
+    Email address
+    <input
+      type="email"
+      [ngModel]="email()"
+      (ngModelChange)="email.set($event)"
+      [class.invalid]="email() && !isEmailValid()"
+    />
+  </label>
+
+  <label>
+    Password
+    <input
+      type="password"
+      [ngModel]="password()"
+      (ngModelChange)="password.set($event)"
+      [class.invalid]="password() && !isPasswordValid()"
+    />
+    @if (password() && !isPasswordValid()) {
+      <span class="field-error">Password must be at least 6 characters</span>
+    }
+  </label>
+
+  <label>
+    Confirm password
+    <input
+      type="password"
+      [ngModel]="confirmPassword()"
+      (ngModelChange)="confirmPassword.set($event)"
+      (keyup.enter)="signUp()"
+      [class.invalid]="confirmPassword() && !passwordsMatch()"
+    />
+    @if (confirmPassword() && !passwordsMatch()) {
+      <span class="field-error">Passwords do not match</span>
+    }
+  </label>
+
+  <button (click)="signUp()" [disabled]="!canSubmit() || loading()">
+    {{ loading() ? "Creating account…" : "Create account" }}
+  </button>
+
+  <div class="links">
+    <a routerLink="/login">Back to sign in</a>
+  </div>
+</div>
