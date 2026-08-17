@@ -1,0 +1,49 @@
+.about-page {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+.back-link {
+  display: inline-block;
+  color: var(--color-on-surface-variant);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  color: var(--color-text);
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  letter-spacing: 0.02em;
+}
+
+.subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--color-on-surface-variant);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid color-mix(in srgb, var(--color-outline) 60%, transparent);
+  width: 40%;
+  margin: 2rem 0;
+}
+
+p {
+  color: var(--color-text);
+  line-height: 1.6;
+  margin: 0 0 1.25rem;
+}
+
+.version {
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--color-on-surface-variant) 70%, transparent);
+}
