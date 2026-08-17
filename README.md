@@ -14,12 +14,12 @@ Most "offline-first" demos fake it — show a spinner, retry on reconnect, call 
 
 ## Features
 
-- 📝 **Block-based markdown editor** — headings, bold/italic/code, bullet lists, numbered lists, and checklists, with a live Write/Preview toggle
-- ⌨️ **Smart list continuation** — press Enter inside a list or checklist and it continues automatically; Backspace on an empty item collapses it back to plain text
-- 📴 **True offline-first** — IndexedDB-backed local cache with a background sync queue; the app is fully usable with no connection
-- 🔐 **Full auth flow** — sign up with email confirmation, sign in, forgot/reset password, all backed by Supabase Auth
-- 🌗 **Light & dark themes** — a deliberate, hand-tuned palette (not framework defaults), persisted across sessions
-- 📲 **Installable PWA** — add it to your home screen and it behaves like a native app
+- **Block-based markdown editor** — headings, bold/italic/code, bullet lists, numbered lists, and checklists, with a live Write/Preview toggle
+- **Smart list continuation** — press Enter inside a list or checklist and it continues automatically; Backspace on an empty item collapses it back to plain text
+- **True offline-first** — IndexedDB-backed local cache with a background sync queue; the app is fully usable with no connection
+- **Full auth flow** — sign up with email confirmation, sign in, forgot/reset password, all backed by Supabase Auth
+- **Light & dark themes** — a deliberate, hand-tuned palette (not framework defaults), persisted across sessions
+- **Installable PWA** — add it to your home screen and it behaves like a native app
 
 ## Tech stack
 
