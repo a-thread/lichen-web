@@ -1,10 +1,10 @@
-import { Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService, isValidEmail } from '../../core/auth.service';
+import { Component, signal } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { Router, RouterLink } from "@angular/router";
+import { AuthService, isValidEmail } from "../../core/auth.service";
 
 @Component({
-  selector: 'app-create-account',
+  selector: "app-create-account",
   standalone: true,
   imports: [FormsModule, RouterLink],
   template: `
@@ -18,28 +18,45 @@ import { AuthService, isValidEmail } from '../../core/auth.service';
 
       <label>
         Email address
-        <input type="email" [(ngModel)]="email" [class.invalid]="email() && !isEmailValid()" />
+        <input
+          type="email"
+          [ngModel]="email()"
+          (ngModelChange)="email.set($event)"
+          [class.invalid]="email() && !isEmailValid()"
+        />
       </label>
 
       <label>
         Password
-        <input type="password" [(ngModel)]="password" [class.invalid]="password() && !isPasswordValid()" />
+        <input
+          type="password"
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event)"
+          [class.invalid]="password() && !isPasswordValid()"
+        />
         @if (password() && !isPasswordValid()) {
-          <span class="field-error">Password must be at least 6 characters</span>
+          <span class="field-error"
+            >Password must be at least 6 characters</span
+          >
         }
       </label>
 
       <label>
         Confirm password
-        <input type="password" [(ngModel)]="confirmPassword" (keyup.enter)="signUp()"
-               [class.invalid]="confirmPassword() && !passwordsMatch()" />
+        <input
+          type="password"
+          [ngModel]="confirmPassword()"
+          (ngModelChange)="confirmPassword.set($event)"
+          (keyup.enter)="signUp()"
+          [class.invalid]="confirmPassword() && !passwordsMatch()"
+        />
         @if (confirmPassword() && !passwordsMatch()) {
           <span class="field-error">Passwords do not match</span>
         }
       </label>
 
       <button (click)="signUp()" [disabled]="!canSubmit() || loading()">
-        {{ loading() ? 'Creating account\u2026' : 'Create account' }}
+        {{ loading() ? "Creating account…" : "Create account" }}
       </button>
 
       <div class="links">
@@ -47,16 +64,19 @@ import { AuthService, isValidEmail } from '../../core/auth.service';
       </div>
     </div>
   `,
-  styleUrls: ['../auth.shared.scss'],
+  styleUrls: ["./auth.shared.scss"],
 })
 export class CreateAccountComponent {
-  email = signal('');
-  password = signal('');
-  confirmPassword = signal('');
+  email = signal("");
+  password = signal("");
+  confirmPassword = signal("");
   loading = signal(false);
   errorMessage = signal<string | null>(null);
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+  ) {}
 
   isEmailValid(): boolean {
     return isValidEmail(this.email());
@@ -68,7 +88,9 @@ export class CreateAccountComponent {
     return this.password() === this.confirmPassword();
   }
   canSubmit(): boolean {
-    return this.isEmailValid() && this.isPasswordValid() && this.passwordsMatch();
+    return (
+      this.isEmailValid() && this.isPasswordValid() && this.passwordsMatch()
+    );
   }
 
   async signUp(): Promise<void> {
@@ -77,11 +99,13 @@ export class CreateAccountComponent {
     this.errorMessage.set(null);
     try {
       await this.auth.signUp(this.email(), this.password());
-      this.router.navigate(['/login'], {
-        state: { infoMessage: 'Check your email to confirm your account.' },
+      this.router.navigate(["/login"], {
+        state: { infoMessage: "Check your email to confirm your account." },
       });
     } catch (err: any) {
-      this.errorMessage.set(err?.message ?? 'Unable to create account. Please try again.');
+      this.errorMessage.set(
+        err?.message ?? "Unable to create account. Please try again.",
+      );
     } finally {
       this.loading.set(false);
     }

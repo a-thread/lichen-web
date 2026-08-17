@@ -1,11 +1,11 @@
-import { Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { Router } from '@angular/router';
-import { AuthService, isValidEmail } from '../../core/auth.service';
+import { Component, signal } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { RouterLink } from "@angular/router";
+import { Router } from "@angular/router";
+import { AuthService, isValidEmail } from "../../core/auth.service";
 
 @Component({
-  selector: 'app-login',
+  selector: "app-login",
   standalone: true,
   imports: [FormsModule, RouterLink],
   template: `
@@ -22,16 +22,26 @@ import { AuthService, isValidEmail } from '../../core/auth.service';
 
       <label>
         Email address
-        <input type="email" [(ngModel)]="email" [class.invalid]="email() && !isEmailValid()" />
+        <input
+          type="email"
+          [ngModel]="email()"
+          (ngModelChange)="email.set($event)"
+          [class.invalid]="email() && !isEmailValid()"
+        />
       </label>
 
       <label>
         Password
-        <input type="password" [(ngModel)]="password" (keyup.enter)="signIn()" />
+        <input
+          type="password"
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event)"
+          (keyup.enter)="signIn()"
+        />
       </label>
 
       <button (click)="signIn()" [disabled]="!canSubmit() || loading()">
-        {{ loading() ? 'Signing in\u2026' : 'Sign in' }}
+        {{ loading() ? "Signing in…" : "Sign in" }}
       </button>
 
       <div class="links">
@@ -40,16 +50,19 @@ import { AuthService, isValidEmail } from '../../core/auth.service';
       </div>
     </div>
   `,
-  styleUrls: ['../auth.shared.scss'],
+  styleUrls: ["./auth.shared.scss"],
 })
 export class LoginComponent {
-  email = signal('');
-  password = signal('');
+  email = signal("");
+  password = signal("");
   loading = signal(false);
   errorMessage = signal<string | null>(null);
   infoMessage = signal<string | null>(null);
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+  ) {}
 
   isEmailValid(): boolean {
     return isValidEmail(this.email());
@@ -65,9 +78,9 @@ export class LoginComponent {
     this.errorMessage.set(null);
     try {
       await this.auth.signIn(this.email(), this.password());
-      this.router.navigate(['/']);
+      this.router.navigate(["/"]);
     } catch (err: any) {
-      this.errorMessage.set(err?.message ?? 'Incorrect email or password');
+      this.errorMessage.set(err?.message ?? "Incorrect email or password");
     } finally {
       this.loading.set(false);
     }
