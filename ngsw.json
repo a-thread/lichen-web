@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1786983873683,
+  "timestamp": 1787015992563,
   "index": "/lichen-web/index.html",
   "assetGroups": [
     {
@@ -53,7 +53,7 @@
     "/lichen-web/chunk-zadj-Vuw.js": "8ea0c0b2f207e62df8740d36fe24a591455d86f9",
     "/lichen-web/index.html": "8161f831dba52a03a638730da9048d8436ac75a1",
     "/lichen-web/main-RMIE6BPU.js": "70ed44773f0127a81a19575eee9eedc3defbb4e8",
-    "/lichen-web/manifest.webmanifest": "fd8823e26484b7a510ff0329a7ff3cfd4a36dd33",
+    "/lichen-web/manifest.webmanifest": "369e0386fd135f74862242f74b0b22c21d33d767",
     "/lichen-web/styles-DSTMB42K.css": "07abc2023f891ea5a17200d52e55b42cfd4b46f3"
   },
   "navigationUrls": [
