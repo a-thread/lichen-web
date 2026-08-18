@@ -2,11 +2,11 @@
   <div class="editor">
     <div class="top-bar">
       @if (screenMode() === 'edit') {
-        <button type="button" class="icon-btn" (click)="requestClose()" title="Close">
+        <button type="button" class="icon-btn" (click)="requestClose()" aria-label="Close" title="Close">
           <app-icon name="close" />
         </button>
       } @else {
-        <button type="button" class="icon-btn" (click)="requestClose()" title="Back">
+        <button type="button" class="icon-btn" (click)="requestClose()" aria-label="Back" title="Back">
           <app-icon name="back" />
         </button>
       }
@@ -31,12 +31,29 @@
       <h1 class="read-title">{{ title() || 'Untitled' }}</h1>
       <app-note-preview [body]="text()" (toggleChecklist)="toggleChecklistReadOnly($event)" />
     } @else {
-      <input [ngModel]="title()" (ngModelChange)="title.set($event)" placeholder="Title" class="title-input" />
+      <h1 class="visually-hidden">{{ existingNote() ? 'Edit note' : 'New note' }}</h1>
+      <input
+        [ngModel]="title()"
+        (ngModelChange)="title.set($event)"
+        placeholder="Title"
+        class="title-input"
+        aria-label="Note title"
+      />
 
       <div class="toolbar-row">
-        <div class="mode-switch">
-          <button type="button" [class.active]="mode() === 'write'" (click)="mode.set('write')">Write</button>
-          <button type="button" [class.active]="mode() === 'preview'" (click)="mode.set('preview')">Preview</button>
+        <div class="mode-switch" role="group" aria-label="View mode">
+          <button
+            type="button"
+            [class.active]="mode() === 'write'"
+            [attr.aria-pressed]="mode() === 'write'"
+            (click)="mode.set('write')"
+          >Write</button>
+          <button
+            type="button"
+            [class.active]="mode() === 'preview'"
+            [attr.aria-pressed]="mode() === 'preview'"
+            (click)="mode.set('preview')"
+          >Preview</button>
         </div>
       </div>
 
@@ -44,7 +61,7 @@
         <app-formatting-toolbar [selection]="currentSelection()" (applyChange)="applyToolbarResult($event)" />
         <textarea #bodyInput [ngModel]="text()" (ngModelChange)="onBodyChange($event)"
                   (keyup)="onCaretMoved()" (click)="onCaretMoved()"
-                  placeholder="Start writing..." rows="16"></textarea>
+                  placeholder="Start writing..." rows="16" aria-label="Note body"></textarea>
       } @else {
         <app-note-preview [body]="text()" (toggleChecklist)="onToggleChecklist($event)" />
       }

@@ -28,9 +28,10 @@
     }
   }
 
-  h2 {
+  h1 {
     margin: 0;
-    color: var(--color-accent);
+    font-size: 1.5rem;
+    color: var(--color-accent-text);
     text-align: center;
     font-weight: 500;
     letter-spacing: 0.01em;
@@ -82,7 +83,7 @@
     margin-top: 0.5rem;
 
     a {
-      color: var(--color-accent);
+      color: var(--color-accent-text);
       font-size: 0.9rem;
       text-decoration: none;
       border-radius: var(--radius-sm);

@@ -1,10 +1,12 @@
 <div class="list-page">
+  <h1 class="visually-hidden">Your notes</h1>
   <div class="toolbar">
     <button
       type="button"
       class="icon-btn"
       [class.active]="searchOpen()"
       (click)="toggleSearch()"
+      aria-label="Search"
       title="Search"
     >
       <app-icon name="search" />
@@ -18,6 +20,7 @@
           type="search"
           class="search-input"
           placeholder="Search Notes"
+          aria-label="Search notes"
           [ngModel]="search()"
           (ngModelChange)="search.set($event)"
         />
@@ -35,19 +38,23 @@
 
     <div class="menu-wrap">
       <button
+        #menuTrigger
         type="button"
         class="icon-btn"
-        (click)="menuOpen.set(!menuOpen())"
+        (click)="toggleMenu()"
+        aria-haspopup="true"
+        [attr.aria-expanded]="menuOpen()"
+        aria-label="Menu"
         title="Menu"
       >
         <app-icon name="more" />
       </button>
       @if (menuOpen()) {
-        <div class="menu-scrim" (click)="menuOpen.set(false)"></div>
-        <div class="menu">
+        <div class="menu-scrim" (click)="closeMenu()"></div>
+        <div class="menu" (keydown.escape)="closeMenu()">
           <div class="menu-handle"></div>
 
-          <button type="button" class="menu-item" (click)="toggleLayout()">
+          <button #firstMenuItem type="button" class="menu-item" (click)="toggleLayout()">
             <app-icon [name]="layout() === 'grid' ? 'list' : 'grid'" [size]="18" />
             <span>{{ layout() === "grid" ? "List view" : "Grid view" }}</span>
           </button>
@@ -63,7 +70,8 @@
               type="button"
               class="menu-item indent"
               [class.selected]="notesStore.sort() === opt[0]"
-              (click)="onSortChange(opt[0]); menuOpen.set(false)"
+              [attr.aria-current]="notesStore.sort() === opt[0] ? 'true' : null"
+              (click)="onSortChange(opt[0]); closeMenu()"
             >
               <span>{{ opt[1] }}</span>
               @if (notesStore.sort() === opt[0]) {
@@ -85,7 +93,7 @@
 
           <div class="menu-divider"></div>
 
-          <a routerLink="/about" class="menu-item" (click)="menuOpen.set(false)">
+          <a routerLink="/about" class="menu-item" (click)="closeMenu()">
             <app-icon name="info" [size]="18" />
             <span>About</span>
           </a>
@@ -120,6 +128,7 @@
               type="button"
               class="delete-btn"
               (click)="deleteNote(note, $event)"
+              aria-label="Delete note"
               title="Delete note"
             >
               <app-icon name="delete" [size]="17" />
@@ -130,7 +139,7 @@
     }
   </ul>
 
-  <a routerLink="/note/new" class="fab" title="New note">
+  <a routerLink="/note/new" class="fab" aria-label="New note" title="New note">
     <app-icon name="add" [size]="26" />
   </a>
 </div>

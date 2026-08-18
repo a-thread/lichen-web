@@ -30,6 +30,8 @@ export class NotesListComponent implements OnInit {
 
   fileInput = viewChild<{ nativeElement: HTMLInputElement }>("fileInput");
   searchInput = viewChild<{ nativeElement: HTMLInputElement }>("searchInput");
+  menuTrigger = viewChild<{ nativeElement: HTMLButtonElement }>("menuTrigger");
+  firstMenuItem = viewChild<{ nativeElement: HTMLButtonElement }>("firstMenuItem");
 
   search = signal("");
   layout = signal<LayoutMode>("grid");
@@ -87,6 +89,19 @@ export class NotesListComponent implements OnInit {
     this.notesStore.setSort(sort);
   }
 
+  toggleMenu(): void {
+    const opening = !this.menuOpen();
+    this.menuOpen.set(opening);
+    if (opening) {
+      queueMicrotask(() => this.firstMenuItem()?.nativeElement.focus());
+    }
+  }
+
+  closeMenu(): void {
+    this.menuOpen.set(false);
+    queueMicrotask(() => this.menuTrigger()?.nativeElement.focus());
+  }
+
   async deleteNote(note: Note, event: Event): Promise<void> {
     event.preventDefault();
     event.stopPropagation();
@@ -98,7 +113,7 @@ export class NotesListComponent implements OnInit {
   }
 
   triggerImport(): void {
-    this.menuOpen.set(false);
+    this.closeMenu();
     this.fileInput()?.nativeElement.click();
   }
 
@@ -123,7 +138,7 @@ export class NotesListComponent implements OnInit {
   }
 
   exportAll(): void {
-    this.menuOpen.set(false);
+    this.closeMenu();
     downloadTextFile(
       "lichen-notes-export.txt",
       formatAllNotesExport(this.notesStore.notes()),

@@ -1,5 +1,10 @@
 <div class="toolbar">
-  <select [ngModel]="formatting().textStyle" (ngModelChange)="onStyleChange($event)" title="Text style">
+  <select
+    [ngModel]="formatting().textStyle"
+    (ngModelChange)="onStyleChange($event)"
+    aria-label="Text style"
+    title="Text style"
+  >
     <option value="NORMAL">Normal</option>
     <option value="H1">Heading 1</option>
     <option value="H2">Heading 2</option>
@@ -8,16 +13,16 @@
 
   <span class="divider"></span>
 
-  <button type="button" class="icon" [class.active]="formatting().bold" (click)="apply(toggleInline(selection(), '**'))" title="Bold"><b>B</b></button>
-  <button type="button" class="icon" [class.active]="formatting().italic" (click)="apply(toggleInline(selection(), '*'))" title="Italic"><i>I</i></button>
+  <button type="button" class="icon" [class.active]="formatting().bold" [attr.aria-pressed]="formatting().bold" (click)="apply(toggleInline(selection(), '**'))" aria-label="Bold" title="Bold"><b>B</b></button>
+  <button type="button" class="icon" [class.active]="formatting().italic" [attr.aria-pressed]="formatting().italic" (click)="apply(toggleInline(selection(), '*'))" aria-label="Italic" title="Italic"><i>I</i></button>
 
   <span class="divider"></span>
 
-  <button type="button" class="icon" [class.active]="formatting().bullet" (click)="apply(toggleBlock(selection(), 'bullet'))" title="Bullet list">&bull;</button>
-  <button type="button" class="icon" [class.active]="formatting().checklist" (click)="apply(toggleBlock(selection(), 'checklist'))" title="Checklist">&#9745;</button>
-  <button type="button" class="icon" [class.active]="formatting().numbered" (click)="apply(toggleBlock(selection(), 'numbered'))" title="Numbered list">1.</button>
+  <button type="button" class="icon" [class.active]="formatting().bullet" [attr.aria-pressed]="formatting().bullet" (click)="apply(toggleBlock(selection(), 'bullet'))" aria-label="Bullet list" title="Bullet list">&bull;</button>
+  <button type="button" class="icon" [class.active]="formatting().checklist" [attr.aria-pressed]="formatting().checklist" (click)="apply(toggleBlock(selection(), 'checklist'))" aria-label="Checklist" title="Checklist">&#9745;</button>
+  <button type="button" class="icon" [class.active]="formatting().numbered" [attr.aria-pressed]="formatting().numbered" (click)="apply(toggleBlock(selection(), 'numbered'))" aria-label="Numbered list" title="Numbered list">1.</button>
 
   <span class="divider"></span>
 
-  <button type="button" class="icon" [class.active]="formatting().code" (click)="apply(toggleInline(selection(), '`'))" title="Code"><code>&lt;/&gt;</code></button>
+  <button type="button" class="icon" [class.active]="formatting().code" [attr.aria-pressed]="formatting().code" (click)="apply(toggleInline(selection(), '`'))" aria-label="Code" title="Code"><code>&lt;/&gt;</code></button>
 </div>

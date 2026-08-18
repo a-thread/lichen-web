@@ -155,7 +155,7 @@ button.accent {
 }
 
 .menu-item.selected {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   font-weight: 500;
 }
 
@@ -165,7 +165,7 @@ button.accent {
 }
 
 .menu-item .check {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   flex: 0 0 auto;
 }
 
@@ -194,6 +194,7 @@ button.accent {
   text-decoration: none;
   color: var(--color-text);
   display: block;
+  height: 100%;
   border-radius: var(--radius);
   transition: background-color 0.12s ease;
 }
@@ -344,5 +345,22 @@ button.accent {
 
   .menu-item.indent {
     padding-left: 2.5rem;
+  }
+
+  /* auto-fill can't fit two 220px columns on a phone width, so grid mode was
+     silently collapsing to one column — visually identical to list mode.
+     Force two columns here, and drop the preview text so titles are what
+     actually distinguishes the two layouts at this width. */
+  .notes-list.grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+  }
+
+  .notes-list.grid .note-row {
+    padding: 0.85rem 0.7rem;
+  }
+
+  .notes-list.grid p {
+    display: none;
   }
 }

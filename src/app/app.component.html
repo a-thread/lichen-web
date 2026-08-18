@@ -1,12 +1,14 @@
+<a class="skip-link" href="#main-content">Skip to main content</a>
 @if (auth.userId()) {
   <header>
-    <h1>lichen</h1>
+    <span class="brand">lichen</span>
     <div class="header-actions">
-      <span class="status">{{ notesStore.isOnline() ? 'Online' : 'Offline — changes saved locally' }}</span>
+      <span class="status" role="status">{{ notesStore.isOnline() ? 'Online' : 'Offline — changes saved locally' }}</span>
       <button
         type="button"
         class="icon-btn"
         (click)="theme.cycle()"
+        [attr.aria-label]="'Theme: ' + theme.preference() + ' (click to change)'"
         [title]="'Theme: ' + theme.preference() + ' (click to change)'"
       >
         @switch (theme.preference()) {
@@ -19,5 +21,7 @@
     </div>
   </header>
 }
-<router-outlet />
+<main id="main-content">
+  <router-outlet />
+</main>
 <app-toast />

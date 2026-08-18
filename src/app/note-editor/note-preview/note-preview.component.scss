@@ -5,15 +5,15 @@
   padding: 0 0.1rem;
 }
 
-.heading {
+h2.heading, h3.heading, h4.heading {
   font-weight: 500;
   margin: 0.5rem 0;
   color: var(--color-text);
 }
 
-.heading.h1 { font-size: 1.5rem; }
-.heading.h2 { font-size: 1.25rem; }
-.heading.h3 { font-size: 1.1rem; }
+h2.heading { font-size: 1.5rem; }
+h3.heading { font-size: 1.25rem; }
+h4.heading { font-size: 1.1rem; }
 
 .text-block {
   margin: 0;
@@ -51,7 +51,7 @@ code {
 }
 
 .checklist-row input[type='checkbox'] {
-  accent-color: var(--color-accent);
+  accent-color: var(--color-accent-text);
 }
 
 .checklist-row .checked {

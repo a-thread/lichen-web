@@ -4,11 +4,13 @@ import { authGuard } from "./data-access/auth/auth.guard";
 export const routes: Routes = [
   {
     path: "login",
+    title: "Sign in · Lichen",
     loadComponent: () =>
       import("./auth/login/login.component").then((m) => m.LoginComponent),
   },
   {
     path: "signup",
+    title: "Create account · Lichen",
     loadComponent: () =>
       import("./auth/create-account/create-account.component").then(
         (m) => m.CreateAccountComponent,
@@ -16,6 +18,7 @@ export const routes: Routes = [
   },
   {
     path: "forgot-password",
+    title: "Forgot password · Lichen",
     loadComponent: () =>
       import("./auth/forgot-password/forgot-password.component").then(
         (m) => m.ForgotPasswordComponent,
@@ -23,6 +26,7 @@ export const routes: Routes = [
   },
   {
     path: "reset-password",
+    title: "Reset password · Lichen",
     loadComponent: () =>
       import("./auth/reset-password/reset-password.component").then(
         (m) => m.ResetPasswordComponent,
@@ -30,6 +34,7 @@ export const routes: Routes = [
   },
   {
     path: "",
+    title: "Your notes · Lichen",
     canActivate: [authGuard],
     loadComponent: () =>
       import("./notes-list/notes-list.component").then(
@@ -38,6 +43,7 @@ export const routes: Routes = [
   },
   {
     path: "note/new",
+    title: "New note · Lichen",
     canActivate: [authGuard],
     loadComponent: () =>
       import("./note-editor/note-editor.component").then(
@@ -46,6 +52,7 @@ export const routes: Routes = [
   },
   {
     path: "note/:id",
+    title: "Edit note · Lichen",
     canActivate: [authGuard],
     loadComponent: () =>
       import("./note-editor/note-editor.component").then(
@@ -54,6 +61,7 @@ export const routes: Routes = [
   },
   {
     path: "about",
+    title: "About · Lichen",
     canActivate: [authGuard],
     loadComponent: () =>
       import("./about/about.component").then((m) => m.AboutComponent),

@@ -2,7 +2,11 @@
   @for (block of blocks(); track $index) {
     @switch (block.type) {
       @case ('heading') {
-        <div [class]="'heading h' + block.level">{{ block.text }}</div>
+        @switch (block.level) {
+          @case (1) { <h2 class="heading">{{ block.text }}</h2> }
+          @case (2) { <h3 class="heading">{{ block.text }}</h3> }
+          @default { <h4 class="heading">{{ block.text }}</h4> }
+        }
       }
       @case ('text') {
         <p class="text-block">

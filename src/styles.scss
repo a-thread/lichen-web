@@ -5,14 +5,16 @@
   --color-surface: #F7F9F6;         /* LichenSurfaceLight */
   --color-surface-variant: #E1E7E2; /* LichenSurfaceVariantLight */
   --color-on-surface-variant: #4A544F;
-  --color-outline: #C2CBC5;
+  --color-outline: #888E8A; /* darkened from #C2CBC5 — original failed the 3:1 non-text-contrast minimum */
 
   --color-primary: #1C2026;    /* LichenBlack — primary buttons/text */
   --color-on-primary: #F0F3EE;
   --color-secondary: #76885A;  /* LichenAccentSoft */
   --color-on-secondary: #F0F3EE;
   --color-accent: #8FA15A;     /* LichenAccent — tertiary, same in both modes */
-  --color-on-accent: #F0F3EE;
+  --color-on-accent: #1C2026;  /* dark label on accent bg — the light label failed WCAG AA (2.53:1) */
+  --color-accent-text: #677441; /* accent hue darkened for use AS text/borders (4.5:1+ vs surface/background) */
+  --color-accent-on-primary: #8FA15A; /* accent as text on --color-primary bg (e.g. the toast) — primary is dark in light mode, so the undarkened hue already passes here */
   --color-text: #1C2026;
   --color-error: #b3261e;
 
@@ -27,7 +29,7 @@
   --color-surface: #2B313A;         /* LichenSurface */
   --color-surface-variant: #353C46; /* LichenSurfaceVariantDark */
   --color-on-surface-variant: #A6B0AB;
-  --color-outline: #3F4752;
+  --color-outline: #6E7C90; /* lightened from #3F4752 — original failed the 3:1 non-text-contrast minimum */
 
   --color-primary: #F0F3EE;    /* LichenLight — primary buttons/text */
   --color-on-primary: #1C2026;
@@ -35,6 +37,8 @@
   --color-on-secondary: #1C2026;
   --color-accent: #8FA15A;     /* LichenAccent — unchanged in dark mode */
   --color-on-accent: #1C2026;
+  --color-accent-text: #8FA15A; /* already passes 4.5:1+ as text in dark mode, no darkening needed */
+  --color-accent-on-primary: #677441; /* accent as text on --color-primary bg — primary is light in dark mode, so it needs the darkened hue instead */
   --color-text: #F0F3EE;
   --color-error: #f2b8b5;
 }
@@ -106,7 +110,38 @@ input, textarea, select {
 
   &:focus-visible, &:focus {
     outline: none;
-    border-color: var(--color-accent);
+    border-color: var(--color-accent-text);
+    box-shadow: var(--focus-ring);
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -3rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-outline);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: top 0.15s ease;
+
+  &:focus-visible {
+    top: 0.75rem;
     box-shadow: var(--focus-ring);
   }
 }
