@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1787140656613,
+  "timestamp": 1787141666166,
   "index": "/lichen-web/index.html",
   "assetGroups": [
     {
@@ -37,8 +37,6 @@
       },
       "urls": [
         "/lichen-web/images/ic_lichen_mark.png",
-        "/lichen-web/images/icons/debug-512.png",
-        "/lichen-web/images/icons/debug-trimmed.png",
         "/lichen-web/images/icons/icon-180.png",
         "/lichen-web/images/icons/icon-192.png",
         "/lichen-web/images/icons/icon-512-maskable.png",
@@ -60,11 +58,9 @@
     "/lichen-web/chunk-olxytF4u.js": "f890ecd6e15f2d995d098dc346a4b5cadd5badb7",
     "/lichen-web/chunk-po7T-eje.js": "42682c6016bb419feb779c88f068093b9e1be44b",
     "/lichen-web/images/ic_lichen_mark.png": "088f46002f8e58ae7fa15d6383fe7e8d60417ec5",
-    "/lichen-web/images/icons/debug-512.png": "d28e958c69e1a957b357bab6ae2d5c43e92c4640",
-    "/lichen-web/images/icons/debug-trimmed.png": "e11c1031a61b3f2a48b606b29a8b53685e505551",
     "/lichen-web/images/icons/icon-180.png": "14a999fb6571f1aea8283d9e1cc6139975a74c0a",
     "/lichen-web/images/icons/icon-192.png": "8ebfe0d989ed318727db757741d2897df5f4c092",
-    "/lichen-web/images/icons/icon-512-maskable.png": "2572f9b8b3d5305b2b88c5b9c3a1dc94f7fa5f38",
+    "/lichen-web/images/icons/icon-512-maskable.png": "e3bcf81329487873baba06fac5c4255a8b62167e",
     "/lichen-web/images/icons/icon-512.png": "a56b5e9cfed97027afd5063a70d7e40797d304ce",
     "/lichen-web/index.html": "980f07dc77649c2812bbfb423aed743a1428f8f6",
     "/lichen-web/main-JTUFBUON.js": "cef0b20de3abb060e62e95989320ca4bc19609c2",
